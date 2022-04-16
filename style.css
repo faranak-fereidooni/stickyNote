@@ -11,22 +11,24 @@ body{
     max-width: 95%;
     margin:0 auto;
 }
-.container1{
+.newButtonContainer{
     margin-left: 5%;
     margin-top:10px;
 }
-.container2{
+.notesContainer{
     display:flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     margin-top:20px;
     margin-left:5%;
 }
-.container3{
-    display:none;
+.newNoteContainer{
     position: absolute;
     left:40%;
     top:26%;
+}
+.newNoteContainerDisplay{
+    display:none;
 }
 .note{
     min-width:250px;

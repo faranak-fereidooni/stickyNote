@@ -1,73 +1,68 @@
-const container2 = document.getElementsByClassName("container2")[0];
-const container3 = document.getElementsByClassName("container3")[0];
+const notesContainer = document.getElementsByClassName("notesContainer")[0];
+const newNoteContainer = document.getElementsByClassName("newNoteContainer")[0];
 const checkIconElement = document.getElementById("check-icon");
 const xIconElement = document.getElementById("x-icon");
 const newNoteButtonElement = document.getElementById("newNoteButton");
 const noteTextElement = document.getElementById("note-text");
 let i = 0;
 
-newNoteButtonElement.addEventListener("click", (e) => {
+newNoteButtonElement.addEventListener("click", function () {
   typeNote();
 });
 
 function typeNote() {
-  if (container3.style.display == "none") {
-    container3.style.display = "block";
+  console.log(newNoteContainer.style.display);
+  if (newNoteContainer.classList.contains("newNoteContainerDisplay")) {
+    newNoteContainer.classList.remove("newNoteContainerDisplay");
   } else {
-    container3.style.display = "none";
+    newNoteContainer.classList.add("newNoteContainerDisplay");
   }
 }
 
-checkIconElement.addEventListener("click", (e) => {
+checkIconElement.addEventListener("click", function () {
   createNote();
 });
 
-xIconElement.addEventListener("click", (e) => {
-    closeWindow();
-  });
-  
-  function closeWindow() {
-    container3.style.display = "none";
-  }
+xIconElement.addEventListener("click", function () {
+  closeWindow();
+});
+
+function closeWindow() {
+  newNoteContainer.style.display = "none";
+}
 
 function createNote() {
-  let newNote = noteTextElement.value;
-  let html = `
-    <div class="note">
-    <h1>${newNote}</h1>
-    </div>`;
+  let noteContent = noteTextElement.value;
+  let noteContainerDiv = document.createElement("div");
+  noteContainerDiv.classList.add("note");
+  let headerNode = document.createElement("h1");
+  headerNode.innerHTML += noteContent;
+  noteContainerDiv.appendChild(headerNode);
 
-  if (newNote.length) {
-    container2.innerHTML += html.trim();
+  noteContainerDiv.style.background = color();
+  noteContainerDiv.style.margin = margin();
+  noteContainerDiv.style.transform = rotate();
+
+  if (noteContent.length) {
+    notesContainer.appendChild(noteContainerDiv);
   }
-  let notes = document.getElementsByClassName("note");
-  const allNote = Array.from(notes);
 
-  allNote
-    .filter(
-      (note) => note.style.background === "" || note.style.background === null
-    )
-    .forEach((note) => {
-      console.log(note.style.background);
-      note.style.background = color();
-      note.style.margin = margin();
-      note.style.transform = rotate();
+  let transformValue;
+  noteContainerDiv.addEventListener("mouseenter", function () {
+    transformValue = noteContainerDiv.style.transform;
+    noteContainerDiv.style.transform += "scale(1.1)";
+    noteContainerDiv.style.transition = "all 0.3s ease-in";
+  });
 
-      note.addEventListener("mouseenter", (e) => {
-        note.style.transform = "scale(1.1)";
-        note.style.transition = "all 0.3s ease-in";
-      });
+  noteContainerDiv.addEventListener("mouseleave", function () {
+    noteContainerDiv.style.transform = transformValue;
+    noteContainerDiv.style.transition = "all 0.3s ease-in";
+  });
 
-      note.addEventListener("mouseleave", (e) => {
-        note.style.transform = "scale(1)";
-        note.style.transition = "all 0.3s ease-in";
-      });
-
-      note.addEventListener("dblclick", (e) => {
-        note.remove();
-      });
-      noteTextElement.value = "";
-    });
+  noteContainerDiv.addEventListener("dblclick", function () {
+    noteContainerDiv.remove();
+  });
+  noteTextElement.value = "";
 }
 
 function margin() {
